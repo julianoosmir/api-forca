@@ -3,7 +3,6 @@ package api.acessos.novo.service;
 
 import api.acessos.novo.config.jwt.JwtRequest;
 import api.acessos.novo.config.jwt.JwtTokenUtil;
-import api.acessos.novo.dto.AuthDto;
 import api.acessos.novo.dto.UserDto;
 import api.acessos.novo.dto.UserResponseDto;
 import api.acessos.novo.entity.Role;
@@ -11,7 +10,6 @@ import api.acessos.novo.entity.Usuario;
 import api.acessos.novo.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -75,11 +73,11 @@ public class UserService implements UserDetailsService {
         return userdtos;
     };
 
-    private String getNamesRoles(List<Role> roles) {
-        List<String> nomesRoles = roles.stream().map(Role::getName).collect(Collectors.toList());
-        return nomesRoles.stream().map(Object::toString)
-                .collect(Collectors.joining(", "));
-    }
+    // private String getNamesRoles(List<Role> roles) {
+    //     List<String> nomesRoles = roles.stream().map(Role::getName).collect(Collectors.toList());
+    //     return nomesRoles.stream().map(Object::toString)
+    //             .collect(Collectors.joining(", "));
+    // }
 
     private String enconderPassword(String senha) {
         return new BCryptPasswordEncoder().encode(senha);
@@ -103,9 +101,9 @@ public class UserService implements UserDetailsService {
 
             final String token = jwtTokenUtil.generateToken(userDetails);
 
-            final AuthDto authDto = new AuthDto(getRoleName(userDetails.getId()), true, token);
+            // final AuthDto authDto = new AuthDto(getRoleName(userDetails.getId()), true, token);
 
-            return ResponseEntity.ok(authDto);
+            return ResponseEntity.ok(token);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.ok(e.getMessage());
